@@ -1,0 +1,31 @@
+[package]
+name = "text-stats"
+version = "0.1.0"
+authors = ["savannstm <savannstm@gmail.com>"]
+edition = "2024"
+rust-version = "1.88.0"
+description = "Word and character counts for a lot of languages, with proper segmentation for Chinese, Japanese and Thai."
+repository = "https://github.com/savannstm/text-stats"
+homepage = "https://crates.io/crates/text-stats"
+documentation = "https://docs.rs/text-stats/"
+keywords = ["text", "word-count", "segmenter", "unicode", "cjk"]
+categories = ["text-processing"]
+readme = "README.md"
+license = "WTFPL"
+exclude = ["/.gitignore", "/rustfmt.toml"]
+
+[features]
+default = ["dictionary"]
+
+# Dictionary-based word segmentation for Chinese, Japanese, Thai, Lao, Khmer and Burmese. Without it a run of such
+# text is not split at all and counts as a single word, so only turn it off for space-delimited languages.
+dictionary = []
+
+# Adds LSTM models for Thai, Lao, Khmer and Burmese (better than dictionaries there); implies dictionary
+# segmentation for Chinese and Japanese.
+lstm = ["icu_segmenter/auto"]
+
+[dependencies]
+icu_segmenter = { version = "2.3.0", default-features = false, features = [
+    "compiled_data",
+] }
